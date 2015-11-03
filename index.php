@@ -1,17 +1,17 @@
 <?php
 error_reporting( E_ALL );
 ini_set("display_errors", 1);
-
+/*
 $mysqli = new mysqli( 'localhost', 'root', 'nas3o1818', 'pagination' );
 
 if ( mysqli_connect_errno() ) {
     printf( "Connect failed: %s\n", mysqli_connect_error() );
     exit();
 }
-
+*/
 //$stmt = $mysqli->prepare( "INSERT INTO users VALUES ( NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
 
-$stmt = $mysqli->prepare( "SELECT * FROM pagination LIMIT 10" );
+//$stmt = $mysqli->prepare( "SELECT * FROM pagination LIMIT 10" );
 
 /*$stmt->bind_param( 
 	'ssssssssss',
@@ -27,7 +27,7 @@ $stmt = $mysqli->prepare( "SELECT * FROM pagination LIMIT 10" );
 	$inDB[ 'phone' ]
 );*/
 
-$stmt->execute()
+//$stmt->execute()
 
 //$stmt->bind_result( $district );
 
@@ -36,6 +36,36 @@ $stmt->execute()
 //print_r( $district );
 
 //$stmt->close();
+
+$mysqli = new mysqli("localhost", "demoUser", "12345678", "pagination");
+
+/* check connection */
+if (mysqli_connect_errno()) {
+    printf( "Connect failed: %s\n", mysqli_connect_error() );
+    exit();
+}
+
+/* create a prepared statement */
+if ( $stmt = $mysqli->prepare( "SELECT counter FROM pagination LIMIT ?" ) ) {
+
+	$var = '10';
+	$stmt->bind_param('i', $var); 
+
+    /* bind parameters for markers */
+    //$stmt->bind_param( 'i', '10' );
+
+    $stmt->execute();
+
+    $stmt->bind_result( $district );
+
+	while ( $stmt->fetch() ) {
+		print_r( $district );
+	}
+
+    $stmt->close();
+}
+
+$mysqli->close();
 
 ?>
 <!doctype html>
