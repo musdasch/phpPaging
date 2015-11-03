@@ -1,62 +1,60 @@
 <?php
-error_reporting( E_ALL );
-ini_set("display_errors", 1);
-/*
-$mysqli = new mysqli( 'localhost', 'root', 'nas3o1818', 'pagination' );
+/**
+ * File: index.php
+ * The index.php loads the data from the pagination database and present the result in a
+ * table limited bei $max_elements.
+ * @author Tim Vögtli
+ * @version 1.0 first version of a pagination page
+ */
 
+/**
+ * This is for error reporting. Remove the commend for enable.
+ */
+//error_reporting( E_ALL );
+//ini_set("display_errors", 1);
+
+/**
+ * $max_elements hods the nummber of max elements per page.
+ * @var string
+ */
+$max_elements = '10';
+
+
+/**
+ * $mysqli halds the conection to the database.
+ * @var mysqli
+ */
+$mysqli = new mysqli( "localhost", "demoUser", "12345678", "pagination" );
+
+/**
+ * This is used for testing the connection to the database. have the connection an error, it will
+ * printt an Connect failed message. 
+ */
 if ( mysqli_connect_errno() ) {
     printf( "Connect failed: %s\n", mysqli_connect_error() );
     exit();
 }
-*/
-//$stmt = $mysqli->prepare( "INSERT INTO users VALUES ( NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
 
-//$stmt = $mysqli->prepare( "SELECT * FROM pagination LIMIT 10" );
-
-/*$stmt->bind_param( 
-	'ssssssssss',
-	$inDB[ 'firstname' ],
-	$inDB[ 'latname' ],
-	$inDB[ 'street' ],
-	$inDB[ 'plz' ],
-	$inDB[ 'city' ],
-	$inDB[ 'country' ],
-	$inDB[ 'username' ],
-	$inDB[ 'password' ],
-	$inDB[ 'email' ],
-	$inDB[ 'phone' ]
-);*/
-
-//$stmt->execute()
-
-//$stmt->bind_result( $district );
-
-//print_r( $stmt->fetch() );
-
-//print_r( $district );
-
-//$stmt->close();
-
-$mysqli = new mysqli("localhost", "demoUser", "12345678", "pagination");
-
-/* check connection */
-if (mysqli_connect_errno()) {
-    printf( "Connect failed: %s\n", mysqli_connect_error() );
-    exit();
-}
-
-/* create a prepared statement */
+/**
+ * $stmt holds the prepared query.
+ * @var obj
+ */
 if ( $stmt = $mysqli->prepare( "SELECT counter FROM pagination LIMIT ?" ) ) {
 
-	$var = '10';
-	$stmt->bind_param('i', $var); 
+	/**
+	 * Bind the $max_element in the query.
+	 */
+	$stmt->bind_param('i', $max_elements); 
 
-    /* bind parameters for markers */
-    //$stmt->bind_param( 'i', '10' );
-
+	/**
+	 * Execute the query.
+	 */
     $stmt->execute();
 
-    $stmt->bind_result( $district );
+    /**
+     * B
+     */
+    $stmt->bind_result( $res );
 
 	while ( $stmt->fetch() ) {
 		print_r( $district );
